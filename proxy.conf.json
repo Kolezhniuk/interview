@@ -1,0 +1,11 @@
+{
+  "/api": {
+      "target": "https://api.datamuse.com",
+      "secure": false,
+      "pathRewrite": {
+        "^/api": ""
+      },
+      "changeOrigin": true,
+      "logLevel": "debug"
+    }
+  }
