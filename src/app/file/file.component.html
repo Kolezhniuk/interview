@@ -1,9 +1,8 @@
 <div class="file" (dblclick)="handleDblClick($event)" #content>
-  <!-- {{wholeText}} -->
-  <!-- {{text$ | async}} -->
 </div>
-<app-modal id="custom-modal-1">
-  <h1>A Custom Angular 7 Modal!</h1>
-  <p>Home page text: <input type="text" [(ngModel)]="bodyText" /></p>
-  <button (click)="closeModal('custom-modal-1');">Close</button>
+<app-modal [(visible)]="showDialog" header="Synonims:" [positionX]="xPosition" [positionY]='yPosition'>
+  <div *ngIf='(suggestions$ | async)?.length === 0'>No results</div>
+	<div *ngFor='let syn of suggestions$ | async'>
+    {{syn.word}}
+</div>
 </app-modal>

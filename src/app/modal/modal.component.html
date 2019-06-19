@@ -1,6 +1,8 @@
-<div class="jw-modal">
-  <div class="jw-modal-body">
-    <ng-content></ng-content>
-  </div>
+<div [@dialog] *ngIf="visible" class="dialog" #modal [style.top]="positionY" [style.left]="positionX">
+  <div class="modal-header">
+	<button *ngIf="closable" (click)="close()" aria-label="Close" class="dialog__close-btn">X</button>
+  <h4>{{header}}</h4>
 </div>
-<div class="jw-modal-background"></div>
+	<ng-content></ng-content>
+</div>
+<div *ngIf="visible" class="overlay" (click)="close()"></div>

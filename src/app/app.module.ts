@@ -13,6 +13,7 @@ import { TextPreprocessingService } from './services/text-preprocesing.service';
 import { DataMuseAPIService } from './services/data-muse-api.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ModalComponent } from './modal/modal.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,12 +21,13 @@ import { ModalComponent } from './modal/modal.component';
     ControlPanelComponent,
     HeaderComponent,
     FooterComponent,
-    ModalComponent
+    ModalComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [
     TextService,

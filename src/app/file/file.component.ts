@@ -1,33 +1,40 @@
-import { ChangeDetectionStrategy, Component, OnInit, Inject, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, Inject, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { TextService } from '../text-service/text.service';
 import { EventBusService } from '../services/event-bus.service';
 import { Events, EmitEvent } from '../models/EmitEvent';
 import { TextPreprocessingService } from '../services/text-preprocesing.service';
 import { from } from 'rxjs/internal/observable/from';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { DataMuseAPIService } from '../services/data-muse-api.service';
-import { ModalService } from '../services/modal.service';
 import { DataMuseResponse } from '../models/DataMuseResponse';
+import { map, debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-file',
   templateUrl: './file.component.html',
   styleUrls: ['./file.component.scss']
 })
-export class FileComponent implements OnInit {
+export class FileComponent implements OnInit, OnDestroy {
+
 
   selectedText: string;
   wholeText: string;
   selectedWordId: string;
   bodyText: string;
-  suggestions$: Observable<DataMuseResponse[]>
+  suggestions$: Observable<DataMuseResponse[]>;
+  showDialog: boolean;
+  boldSubscription$: Subscription;
+  italicSubscription$: Subscription;
+  underlineSubscription$: Subscription;
+  xPosition: string;
+  yPosition: string;
+
   @ViewChild('content') content: ElementRef
 
   constructor(private textService: TextService,
     private eventBusService: EventBusService,
     private textPreprocesingService: TextPreprocessingService,
-    private dataMuseAPIService: DataMuseAPIService,
-    private modalService: ModalService) {
+    private dataMuseAPIService: DataMuseAPIService) {
   }
 
   ngOnInit() {
@@ -35,14 +42,12 @@ export class FileComponent implements OnInit {
       this.wholeText = this.textPreprocesingService.wrapWordsWithSpan(data);
       this.content.nativeElement.innerHTML = this.wholeText
     });
-    this.dataMuseAPIService.getSynonyms('test');
     this.subscribeEvents();
-    this.bodyText = 'This text can be updated in modal 1';
 
   }
 
   subscribeEvents() {
-    this.eventBusService.on(Events.BoldChoosed, () => {
+    this.boldSubscription$ = this.eventBusService.on(Events.BoldChoosed, () => {
       this.textPreprocesingService.makeBold(this.selectedWordId);
     });
     this.eventBusService.on(Events.ItalicChoosed, () => {
@@ -51,25 +56,29 @@ export class FileComponent implements OnInit {
     this.eventBusService.on(Events.UnderlineChoosed, () => {
       this.textPreprocesingService.makeUnderline(this.selectedWordId);
     });
+
+
   }
 
   handleDblClick($event) {
     this.selectedWordId = $event.target.id;
     const word = $event.target.innerText;
+    const offset = 20;
+    this.xPosition = `${$event.pageX + offset}px`;
+    this.yPosition = `${$event.pageY + offset}px`;
     this.suggestions$ = this.dataMuseAPIService.getSynonyms(word)
-
+      .pipe(
+        debounceTime(50),
+        distinctUntilChanged(),
+        finalize(() => this.showDialog = true)
+      );
   }
 
 
-  openModal(id: string) {
-    this.eventBusService.on(Events.UnderlineChoosed, () => {
-      this.textPreprocesingService.makeUnderline(this.selectedWordId);
-    });
-    this.modalService.open(id);
-  }
 
-  closeModal(id: string) {
-    this.modalService.close(id);
+  ngOnDestroy(): void {
+    this.boldSubscription$.unsubscribe();
+    this.italicSubscription$.unsubscribe();
+    this.underlineSubscription$.unsubscribe();
   }
-
 }

@@ -1,48 +1,39 @@
-:host {
-    /* modals are hidden by default */
-    display: none;
 
-    .jw-modal {
-        /* modal container fixed across whole screen */
-        position: sticky;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-
-        /* z-index must be higher than .jw-modal-background */
-        z-index: 1000;
-        
-        /* enables scrolling for tall modals */
-        overflow: auto;
-
-        .jw-modal-body {
-            padding: 20px;
-            background: #fff;
-
-            /* margin exposes part of the modal background */
-            margin: 40px;
-        }
+  
+  .dialog {
+    .modal-header{
+     h4{
+         margin-top: 0px;
+         text-align: left;
+     }
     }
 
-    .jw-modal-background {
-        /* modal background fixed across whole screen */
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
+    z-index: 1000;
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 20px;
+    min-height: 50px;
+    width: 90%;
+    max-width: 120px;
+    background-color: #fff;
+    padding: 12px;
+    text-align: center;
+    box-shadow: 0 7px 8px -4px rgba(0, 0, 0, 0.2), 0 13px 19px 2px rgba(0, 0, 0, 0.14), 0 5px 24px 4px rgba(0, 0, 0, 0.12);
+  }
 
-        /* semi-transparent black  */
-        background-color: #000;
-        opacity: 0.75;
-        
-        /* z-index must be below .jw-modal and above everything else  */
-        z-index: 900;
+  @media (min-width: 768px) {
+    .dialog {
+      top: 40px;
     }
-}
-
-body.jw-modal-open {
-    /* body overflow is hidden to hide main scrollbar when modal window is open */
-    overflow: hidden;
-}
+  }
+  
+  .dialog__close-btn {
+    border: 0;
+    background: none;
+    color: #2d2d2d;
+    position: absolute;
+    top: 12px;
+    right: 5px;
+    font-size: 14px;
+  }
