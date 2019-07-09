@@ -1,8 +1,12 @@
 <div class="file" (dblclick)="handleDblClick($event)" #content>
+    {{ text$ | async }}
 </div>
-<app-modal [(visible)]="showDialog" header="Synonims:" [positionX]="xPosition" [positionY]='yPosition'>
-  <div *ngIf='(suggestions$ | async)?.length === 0'>No results</div>
+<app-modal [(visible)]="showDialog"
+           header="Synonims:"
+           [positionX]="xPosition"
+           [positionY]='yPosition'
+           [isLoading]="isLoading$ | async">
 	<div *ngFor='let syn of suggestions$ | async'>
-    {{syn.word}}
+    {{syn}}
 </div>
 </app-modal>

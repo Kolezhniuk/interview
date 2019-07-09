@@ -1,13 +1,11 @@
 
-  
   .dialog {
     .modal-header{
      h4{
-         margin-top: 0px;
+         margin-top: 0;
          text-align: left;
      }
     }
-
     z-index: 1000;
     position: fixed;
     right: 0;
@@ -36,4 +34,50 @@
     top: 12px;
     right: 5px;
     font-size: 14px;
+  }
+
+  @keyframes pulse {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: .25;
+      transform: scale(.75);
+    }
+  }
+
+  .spinner-box {
+    width: 120px;
+    display: flex;
+    justify-content: center;
+    vertical-align: center;
+    align-items: center;
+    background-color: transparent;
+  }
+
+  /* PULSE BUBBLES */
+
+  .pulse-container {
+    width: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .pulse-bubble {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: #ffa500;
+  }
+
+  .pulse-bubble-1 {
+    animation: pulse .4s ease 0s infinite alternate;
+  }
+  .pulse-bubble-2 {
+    animation: pulse .4s ease .2s infinite alternate;
+  }
+  .pulse-bubble-3 {
+    animation: pulse .4s ease .4s infinite alternate;
   }

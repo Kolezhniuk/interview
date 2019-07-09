@@ -1,9 +1,11 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, ElementRef, EventEmitter, Output, ViewChild, Renderer2, AfterViewInit } from '@angular/core';
-import { trigger, state, style, animate, transition } from '@angular/animations';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {animate, style, transition, trigger} from '@angular/animations';
+
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('dialog', [
       transition('void => *', [
@@ -17,9 +19,8 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
   ]
 })
 export class ModalComponent implements OnInit {
- 
-
   @Input() closable = true;
+  @Input() isLoading = false;
   @Input() visible: boolean;
   @Input() header: string;
   @Input() positionX = '0px';

@@ -14,6 +14,15 @@ import { DataMuseAPIService } from './services/data-muse-api.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ModalComponent } from './modal/modal.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import {StoreModule} from '@ngrx/store';
+import {appReducer} from './store/reducers/app.reducer';
+import {EffectsModule} from '@ngrx/effects';
+import {TextEffect} from './store/effects/text.effect';
+import {environment} from '../environments/environment';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {FontButtonsEffect} from './store/effects/fontButtons.effect';
+import {SuggestionEffect} from './store/effects/suggestion.effect';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,10 +36,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    StoreModule.forRoot(appReducer),
+    EffectsModule.forRoot([TextEffect, FontButtonsEffect, SuggestionEffect]),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
     BrowserAnimationsModule
   ],
   providers: [
     TextService,
+    FontButtonsEffect,
     EventBusService,
     TextPreprocessingService,
     DataMuseAPIService

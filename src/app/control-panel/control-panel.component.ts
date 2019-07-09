@@ -1,28 +1,30 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { EventBusService } from '../services/event-bus.service';
-import { Events } from '../models/EmitEvent';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {IAppState} from '../store/state/app.state';
+import {Store} from '@ngrx/store';
+import {BoldButtonChanged, ItalicButtonChanged, UnderlineButtonChanged} from '../store/actions/fontButtons.actions';
 
 @Component({
-  selector: 'app-control-panel',
-  templateUrl: './control-panel.component.html',
-  styleUrls: ['./control-panel.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-control-panel',
+    templateUrl: './control-panel.component.html',
+    styleUrls: ['./control-panel.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ControlPanelComponent {
 
 
-  constructor(private eventBusService: EventBusService) { }
+    constructor(private store: Store<IAppState>) {
+    }
 
-  processBold() {
-    this.eventBusService.emit({ name: Events.BoldChoosed});
-  }
+    processBold() {
+        this.store.dispatch( new BoldButtonChanged());
+    }
 
-  processItalic() {
-    this.eventBusService.emit({ name: Events.ItalicChoosed});
-  }
+    processItalic() {
+        this.store.dispatch(new ItalicButtonChanged());
+    }
 
-  processUnderline() {
-    this.eventBusService.emit({ name: Events.UnderlineChoosed });
-  }
-
+    processUnderline() {
+        this.store.dispatch(new UnderlineButtonChanged());
+    }
 }
+
